@@ -5,6 +5,7 @@ import { Component, Fragment } from "react";
 import { AppBar, Box, IconButton, Toolbar, Typography } from "@mui/material";
 import Login from "../component/login/Login";
 import { ArrowBack } from "@mui/icons-material";
+import { GoogleLogout } from "react-google-login";
 
 
 
@@ -50,8 +51,13 @@ class AppRouter extends Component {
                             Forum Dayin 
                         </Typography>
                         {this.state.childPage && <Link to={"/"}><IconButton variant="contained" label="back"><ArrowBack/>Back</IconButton></Link>}
-                        <Login label={this.state.username?this.state.username:'Login'} onSuccessLogin={(profileObj) => this.setState({username: profileObj.name, profileObj: profileObj})}/>
-                    </Toolbar>
+                        {this.state.username && <GoogleLogout buttonText={"Logout : "+ this.state.username} onLogoutSuccess={()=> {
+                          this.setState({username: undefined, profileObj: undefined})
+                        }}/>}
+                        {!this.state.username && 
+                         <Login label={'Login'} onSuccessLogin={(profileObj) => this.setState({username: profileObj.name, profileObj: profileObj})}/>
+                        }
+                        </Toolbar>
                     
                 </AppBar>
                 <Routes>
